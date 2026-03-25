@@ -1,13 +1,11 @@
 from typing import Annotated
 from fastapi import Depends
 from sqlmodel import Session, create_engine
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://root:root@db:3306/school")
-DATABASE_URL = "mysql+pymysql://root:root@db:3306/School"
+DATABASE_URL = "mysql+pymysql://root:root@db:3306/school"
 
 engine = create_engine(DATABASE_URL)
 

@@ -21,10 +21,12 @@ export default function TeachersTable() {
   const [editing, setEditing] = useState<Teacher | null>(null);
   const [form, setForm] = useState<Teacher>({ name: "" });
 
-  const load = async () => setTeachers(await teacherService.getAll());
-
   useEffect(() => {
-    load();
+    const fetchTeachers = async () => {
+      const data = await teacherService.getAll();
+      setTeachers(data);
+    };
+    fetchTeachers();
   }, []);
 
   const handleSubmit = async () => {
@@ -143,17 +145,19 @@ export default function TeachersTable() {
           </Typography>
           <Stack gap={2} mt={1}>
             {[
-              { label: "Nom", key: "name" },
-              { label: "Prénom", key: "lastname" },
-              { label: "Matière", key: "subject" },
-              { label: "Email", key: "email" },
-              { label: "Classe", key: "clazz" },
+              { label: "Nom", key: "name" as keyof Teacher },
+              { label: "Prénom", key: "lastname" as keyof Teacher },
+              { label: "Matière", key: "subject" as keyof Teacher },
+              { label: "Email", key: "email" as keyof Teacher },
+              { label: "Classe", key: "clazz" as keyof Teacher },
             ].map(({ label, key }) => (
               <FormControl key={key}>
                 <FormLabel>{label}</FormLabel>
                 <Input
-                  value={(form as any)[key] ?? ""}
-                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  value={form[key] ?? ""}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, [key]: e.target.value }))
+                  }
                 />
               </FormControl>
             ))}

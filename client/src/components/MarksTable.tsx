@@ -21,9 +21,12 @@ export default function MarksTable() {
   const [editing, setEditing] = useState<Mark | null>(null);
   const [form, setForm] = useState<Mark>({});
 
-  const load = async () => setMarks(await markService.getAll());
   useEffect(() => {
-    load();
+    const fetchMarks = async () => {
+      const data = await markService.getAll();
+      setMarks(data);
+    };
+    fetchMarks();
   }, []);
 
   const handleSubmit = async () => {

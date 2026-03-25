@@ -23,16 +23,11 @@ export default function StudentsTable() {
 
   const load = async () => setStudents(await studentService.getAll());
 
-  const fetchStudents = async () => {
-    try {
-      const response = await studentService.getAll();
-      setStudents(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchStudents = async () => {
+      const data = await studentService.getAll();
+      setStudents(data);
+    };
     fetchStudents();
   }, []);
 
