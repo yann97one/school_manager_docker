@@ -35,7 +35,6 @@ export default function TeachersTable() {
     setOpen(false);
     setForm({ name: "" });
     setEditing(null);
-    load();
   };
 
   const handleEdit = (t: Teacher) => {
@@ -45,7 +44,6 @@ export default function TeachersTable() {
   };
   const handleDelete = async (id: number) => {
     await teacherService.delete(id);
-    load();
   };
 
   return (

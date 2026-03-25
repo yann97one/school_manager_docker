@@ -35,7 +35,6 @@ export default function MarksTable() {
     setOpen(false);
     setForm({});
     setEditing(null);
-    load();
   };
 
   const handleEdit = (m: Mark) => {
@@ -45,7 +44,6 @@ export default function MarksTable() {
   };
   const handleDelete = async (id: number) => {
     await markService.delete(id);
-    load();
   };
 
   const getColor = (value?: number) => {
