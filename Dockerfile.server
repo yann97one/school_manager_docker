@@ -1,0 +1,22 @@
+FROM python
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y curl && \
+    pip install poetry
+
+COPY server/pyproject.toml server/poetry.lock* ./
+
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-root
+
+COPY server/ .
+
+
+COPY server/ .
+
+
+
+EXPOSE 8000
+
+CMD ["fastapi", "dev", "main.py", "--host", "0.0.0.0", "--port", "8000", "--reload"]
