@@ -1,0 +1,4 @@
+- Lenteur au niveau du build surtout niveau client le chown il chownait les nodes_modules
+ -> solution : Faire le chown en même temps que le COPY
+
+ 

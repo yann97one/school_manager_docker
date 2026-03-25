@@ -1,0 +1,19 @@
+FROM node
+
+WORKDIR /app
+
+# RUN npm install -g yarn
+
+COPY --chown=node:node client/package.json client/yarn.lock ./
+USER node
+
+RUN yarn install
+
+COPY --chown=node:node client/ .
+
+
+
+
+EXPOSE 5173
+
+CMD ["yarn", "dev"]
