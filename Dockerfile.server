@@ -13,8 +13,6 @@ RUN poetry config virtualenvs.create false && \
 COPY server/ .
 
 
-COPY server/ .
-
 
 
 EXPOSE 8000

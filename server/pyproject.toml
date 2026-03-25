@@ -10,8 +10,8 @@ python = ">=3.12,<4.0"
 fastapi = {extras = ["standard"], version = ">=0.115.0"}
 sqlmodel = ">=0.0.37"
 sqlalchemy = ">=2.0.0"
-pymysql = ">=1.1.2"
 python-dotenv = ">=1.0.0"
+psycopg2-binary = "^2.9.11"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

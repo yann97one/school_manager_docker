@@ -1,3 +1,4 @@
+import os
 from typing import Annotated
 from fastapi import Depends
 from sqlmodel import Session, create_engine
@@ -5,7 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = "mysql+pymysql://root:root@db:3306/school"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(DATABASE_URL)
 

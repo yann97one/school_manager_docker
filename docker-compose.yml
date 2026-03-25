@@ -3,7 +3,8 @@ networks:
     driver: bridge
 
 volumes:
-  mysql-data:
+  postgres-data:
+  pgadmin-data:
 
 services:
   client:
@@ -28,33 +29,48 @@ services:
       - "8000:8000"
     volumes:
       - ./server:/app
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
     networks:
       - app-network
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile.database
+    image: postgres:16
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
 
-  phpmyadmin:
-    image: phpmyadmin:latest
+  pgadmin:
+    image: dpage/pgadmin4
     ports:
-      - "8080:80"
+      - "5050:80"
     environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - app-network
+    restart: unless-stopped
