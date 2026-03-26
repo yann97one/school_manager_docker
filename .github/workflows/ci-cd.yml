@@ -91,6 +91,8 @@ jobs:
           file: Dockerfile.client.prod
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/school-client:latest
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

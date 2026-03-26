@@ -3,9 +3,9 @@ import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 class ApiClient {
   private readonly client: AxiosInstance;
 
-  constructor(baseURL: string) {
+  constructor() {
     this.client = axios.create({
-      baseURL,
+      baseURL: import.meta.env.VITE_API_URL,
       headers: { "Content-Type": "application/json" },
     });
   }
@@ -39,4 +39,4 @@ class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient("http://localhost:8000");
+export const apiClient = new ApiClient();
